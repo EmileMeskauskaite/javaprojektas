@@ -52,7 +52,7 @@ public class WarehouseWeb {
     @ResponseBody
     public String deleteWarehouse(@PathVariable(name = "id") int id) {
         System.out.println("Deleting warehouse with ID: " + id);
-        customHib.deleteEntityByIdW(Warehouse.class, id);
+        customHib.delete(Warehouse.class, id);
         return "Warehouse deleted";
     }
 
@@ -69,7 +69,7 @@ public class WarehouseWeb {
         warehouse.setAddress(properties.getProperty("address"));
 
 
-        customHib.createWarehouse(properties.getProperty("title"), properties.getProperty("address"));
+        customHib.create(properties.getProperty("title"), properties.getProperty("address"));
         return "Warehouse created";
     }
 

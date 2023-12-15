@@ -68,7 +68,7 @@ public class ProductTabController implements Initializable {
         if (productType.getSelectionModel().getSelectedItem() == ProductType.PLANT) {
             Warehouse selectedWarehouse = warehouseComboBox.getSelectionModel().getSelectedItem();
             Warehouse warehouse = customHib.getEntityById(Warehouse.class, selectedWarehouse.getId());
-            customHib.create(new Plant(productTitleField.getText(), productDescriptionField.getText(), productManufacturerField.getText(), warehouse, plantDateField.getValue()));
+            customHib.create(new Other(productTitleField.getText(), productDescriptionField.getText(), productManufacturerField.getText(), warehouse, plantDateField.getValue()));
         }
         loadProductListManager();
     }

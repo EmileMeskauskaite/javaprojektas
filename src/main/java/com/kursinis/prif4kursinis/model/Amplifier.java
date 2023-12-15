@@ -19,7 +19,7 @@ public class Amplifier extends Product {
     public Amplifier(String title, String description, Warehouse warehouse, String manufacturer, String type, String price, String brand) {
         super(title, description, warehouse, manufacturer, price);
         this.type = type;
-        this.brand = brand;
+
     }
     public String getType() {
         System.out.println("Type: " + type);

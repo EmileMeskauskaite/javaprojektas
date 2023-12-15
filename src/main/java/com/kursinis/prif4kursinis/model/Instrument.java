@@ -20,7 +20,6 @@ public class Instrument extends Product {
     public Instrument(String title, String description, Warehouse warehouse, String manufacturer, String type, String model, String price, String brand) {
         super(title, description, warehouse, manufacturer, price);
         this.type = type;
-        this.brand = brand;
         this.model = model;
     }
 }

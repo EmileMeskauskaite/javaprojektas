@@ -49,4 +49,11 @@ public class Product implements Serializable {
         this.manufacturer = manufacturer;
         this.warehouse = warehouse;
     }
+
+    public Product(String title, String description, Warehouse warehouse, String manufacturer, String price) {
+        this.title = title;
+        this.description = description;
+        this.warehouse = warehouse;
+        this.manufacturer = manufacturer;
+    }
 }

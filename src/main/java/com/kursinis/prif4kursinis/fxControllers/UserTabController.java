@@ -1,6 +1,6 @@
 package com.kursinis.prif4kursinis.fxControllers;
 
-import com.kursinis.prif4kursinis.fxControllers.tableviewparameters.CustomerTableParameters;
+import com.kursinis.prif4kursinis.fxControllers.tableParameters.CustomerTableParameters;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.model.Customer;
 import com.kursinis.prif4kursinis.model.Manager;

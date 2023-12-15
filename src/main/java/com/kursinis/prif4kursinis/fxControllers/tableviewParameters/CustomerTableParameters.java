@@ -1,5 +1,6 @@
-package com.kursinis.prif4kursinis.fxControllers.tableviewparameters;
+package com.kursinis.prif4kursinis.fxControllers.tableviewParameters;
 
+import com.kursinis.prif4kursinis.fxControllers.tableParameters.UserTableParameters;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -26,4 +27,6 @@ public class CustomerTableParameters extends UserTableParameters {
     public void setAddress(String address) {
         this.address.set(address);
     }
+
+
 }
