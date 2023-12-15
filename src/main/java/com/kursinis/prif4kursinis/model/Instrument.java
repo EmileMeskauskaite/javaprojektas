@@ -17,9 +17,11 @@ public class Instrument extends Product {
     private String model;
 
 
-    public Instrument(String title, String description, Warehouse warehouse, String manufacturer, String type, String model, String price, String brand) {
-        super(title, description, warehouse, manufacturer, price);
+    public Instrument(String title, String description, String manufacturer, Warehouse warehouse, String type, String model,String price) {
+        super(title, description, manufacturer, warehouse);
         this.type = type;
         this.model = model;
     }
+
+
 }

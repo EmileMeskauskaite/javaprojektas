@@ -13,4 +13,11 @@ import lombok.Setter;
 @Setter
 public class Other extends Product {
     private double weight;
+
+    public Other(String title, String description, String manufacturer, Warehouse warehouse, double weight,String price) {
+        super(title, description, manufacturer, warehouse);
+        this.weight = weight;
+    }
+
+
 }

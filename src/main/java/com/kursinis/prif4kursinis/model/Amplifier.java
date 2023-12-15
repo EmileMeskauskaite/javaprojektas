@@ -13,16 +13,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Amplifier extends Product {
     private String type;
-    private String brand;
+    private String model;
 
 
-    public Amplifier(String title, String description, Warehouse warehouse, String manufacturer, String type, String price, String brand) {
-        super(title, description, warehouse, manufacturer, price);
+
+    public Amplifier(String title, String description, String manufacturer, Warehouse warehouse, String type, String model, double price) {
+
         this.type = type;
-
-    }
-    public String getType() {
-        System.out.println("Type: " + type);
-        return null;
+        this.model = model;
     }
 }
