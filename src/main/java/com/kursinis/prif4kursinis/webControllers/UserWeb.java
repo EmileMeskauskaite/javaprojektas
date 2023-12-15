@@ -94,7 +94,8 @@ public class UserWeb {
                 properties.getProperty("login"),
                 properties.getProperty("password"),
                 properties.getProperty("name"),
-                properties.getProperty("surname")
+                properties.getProperty("surname"),
+                properties.getProperty("address")
 
         );
 
@@ -165,8 +166,9 @@ public class UserWeb {
         builder.registerTypeAdapter(Manager.class, new ManagerGsonSerializer());
         builder.registerTypeAdapter(Customer.class, new CustomerGsonSerializer());
         Gson gson = builder.create();
+        customHib.update(user);
 
-        return gson.toJson(customHib.updateEntity(user));
+        return gson.toJson(user);
 
     }
 

@@ -55,4 +55,6 @@ public abstract class User implements Serializable {
                 ", password='" + password + '\'' +
                 '}';
     }
+
+
 }

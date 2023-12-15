@@ -69,7 +69,7 @@ public class WarehouseWeb {
         warehouse.setAddress(properties.getProperty("address"));
 
 
-        customHib.create(properties.getProperty("title"), properties.getProperty("address"));
+        customHib.createWarehouse(properties.getProperty("title"), properties.getProperty("address"));
         return "Warehouse created";
     }
 
@@ -81,29 +81,12 @@ public class WarehouseWeb {
         Gson parser = new Gson();
         Properties properties = parser.fromJson(data, Properties.class);
 
-        // Ensure the ID is provided in the request data
-        String idString = properties.getProperty("id");
-        if (idString == null || idString.isEmpty()) {
-            return "Error: Warehouse ID is required for update.";
-        }
+        Warehouse warehouse = new Warehouse();
+        warehouse.setTitle(properties.getProperty("title"));
+        warehouse.setAddress(properties.getProperty("address"));
 
-        // Parse the ID from String to Long
-        Long warehouseId = Long.parseLong(idString);
-
-        // Fetch the existing warehouse from the database
-        Warehouse existingWarehouse = customHib.getWarehouseById(warehouseId);
-
-        if (existingWarehouse != null) {
-            // Update fields
-            existingWarehouse.setTitle(properties.getProperty("title"));
-            existingWarehouse.setAddress(properties.getProperty("address"));
-
-            // Save the updated entity
-            customHib.updateWarehouse(existingWarehouse);
-            return "Warehouse updated";
-        } else {
-            return "Error: Warehouse not found for the given ID.";
-        }
+        customHib.update(warehouse);
+        return "Warehouse updated";
     }
 
 
@@ -112,17 +95,18 @@ public class WarehouseWeb {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String getWarehouseByCredentials(@RequestBody String data) {
-
         System.out.println(data);
         Gson parser = new Gson();
         Properties properties = parser.fromJson(data, Properties.class);
 
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Warehouse.class, new WarehouseGsonSerializer());
+        builder.registerTypeAdapter(LocalDate.class, new LocalDateGsonSerializer());
+        builder.registerTypeAdapter(Manager.class, new ManagerGsonSerializer());
+        builder.registerTypeAdapter(Customer.class, new CustomerGsonSerializer());
         Gson gson = builder.create();
 
-
         Warehouse warehouse = customHib.getWarehouseByCredentials(properties.getProperty("title"), properties.getProperty("address"));
+
         return warehouse != null ? gson.toJson(warehouse) : "";
     }
 

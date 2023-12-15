@@ -24,8 +24,7 @@ public class ProductTabController implements Initializable {
     public DatePicker plantDateField;
     @FXML
     public TextField weightField;
-    @FXML
-    public TextArea chemicalDescriptionField;
+
     @FXML
     public TextField productManufacturerField;
 
@@ -43,19 +42,19 @@ public class ProductTabController implements Initializable {
     }
 
     public void enableProductFields() {
-        if (productType.getSelectionModel().getSelectedItem() == ProductType.PLANT) {
+        if (productType.getSelectionModel().getSelectedItem() == ProductType.INSTRUMENT) {
 
             plantDateField.setDisable(false);
             weightField.setDisable(true);
-            chemicalDescriptionField.setDisable(true);
+
         } else if (productType.getSelectionModel().getSelectedItem() == ProductType.OTHER) {
             plantDateField.setDisable(true);
             weightField.setDisable(false);
-            chemicalDescriptionField.setDisable(true);
+
         } else {
             plantDateField.setDisable(true);
             weightField.setDisable(false);
-            chemicalDescriptionField.setDisable(false);
+
         }
     }
 
@@ -65,11 +64,18 @@ public class ProductTabController implements Initializable {
     }
 
     public void addNewProduct() {
-        if (productType.getSelectionModel().getSelectedItem() == ProductType.PLANT) {
-            Warehouse selectedWarehouse = warehouseComboBox.getSelectionModel().getSelectedItem();
-            Warehouse warehouse = customHib.getEntityById(Warehouse.class, selectedWarehouse.getId());
+        Warehouse selectedWarehouse = warehouseComboBox.getSelectionModel().getSelectedItem();
+        Warehouse warehouse = customHib.getEntityById(Warehouse.class, selectedWarehouse.getId());
+        ProductType selectedProductType = productType.getSelectionModel().getSelectedItem();
+
+        if (selectedProductType == ProductType.INSTRUMENT) {
+            customHib.create(new Instrument(productTitleField.getText(), productDescriptionField.getText(), productManufacturerField.getText(), warehouse, weightField.getText()));
+        } else if (selectedProductType == ProductType.OTHER) {
             customHib.create(new Other(productTitleField.getText(), productDescriptionField.getText(), productManufacturerField.getText(), warehouse, plantDateField.getValue()));
+        } else if (selectedProductType == ProductType.AMPLIFIER) {
+            customHib.create(new Amplifier(productTitleField.getText(), productDescriptionField.getText(), productManufacturerField.getText(), warehouse, plantDateField.getValue()));
         }
+
         loadProductListManager();
     }
 

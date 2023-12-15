@@ -118,4 +118,91 @@ public class CustomHib extends GenericHib {
             e.printStackTrace();
         }
     }
+
+    public void createWarehouse(String title, String address) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Warehouse warehouse = new Warehouse(title, address);
+            em.persist(warehouse);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteEntityById(Class<User> userClass, int id) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            User user = em.find(userClass, id);
+            if (user != null) {
+                em.remove(user);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public User createUser(String login, String password, String name, String surname, String address) {
+        EntityManager em = getEntityManager();
+        User user = null;
+        try {
+            em.getTransaction().begin();
+            Customer customer = new Customer();
+            customer.setLogin(login);
+            customer.setPassword(password);
+            customer.setName(name);
+            customer.setSurname(surname);
+            em.persist(customer);
+            em.getTransaction().commit();
+            user = customer; // Assign the created customer to the user reference
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) em.close();
+        }
+        return user;
+    }
+
+    public Warehouse getWarehouseByCredentials(String title, String address) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Warehouse> query = cb.createQuery(Warehouse.class);
+            Root<Warehouse> root = query.from(Warehouse.class);
+            query.select(root).where(cb.and(cb.like(root.get("title"), title), cb.like(root.get("address"), address)));
+            Query q;
+
+            q = em.createQuery(query);
+            return (Warehouse) q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            if (em != null) em.close();
+        }
+    }
+
+    public User updateUser(String login, String password, String name, String surname, int userId) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            User user = em.find(User.class, userId);
+            if (user != null) {
+                user.setLogin(login);
+                user.setPassword(password);
+                user.setName(name);
+                user.setSurname(surname);
+                em.merge(user);
+            }
+            em.getTransaction().commit();
+            return user;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
