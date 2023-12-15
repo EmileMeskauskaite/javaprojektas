@@ -79,7 +79,7 @@ public class MainShopController implements Initializable {
                 Cart selectedOrder = newValue;
 
                 // Get all available products
-                List<Product> allProducts = customHib.getAvailableProducts();
+                List<Product> allProducts = customHib.getAllRecords(Product.class);
 
                 // Get products in the selected order
                 List<Product> productsInOrder = selectedOrder.getItemsInCart();
@@ -95,6 +95,7 @@ public class MainShopController implements Initializable {
                 itemsInOrder.getItems().clear();
                 itemsInOrder.getItems().addAll(productsInOrder);
             }
+
         });
     }
 
@@ -194,5 +195,6 @@ public class MainShopController implements Initializable {
     }
 
     public void removeFromExisting() {
+
     }
 }

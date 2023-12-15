@@ -82,7 +82,7 @@ public class CustomHib extends GenericHib {
             User user = getEntityById(User.class, userId);
             Cart cart = new Cart(user);
             for (Product p : productList) {
-                Product product = em.merge(p); // Merge the product instance before adding it to the cart
+                Product product = em.find(Product.class, p.getId()); // Retrieve the existing product from the database
                 product.setCart(cart);
                 cart.getItemsInCart().add(product);
             }
@@ -92,8 +92,6 @@ public class CustomHib extends GenericHib {
             em.getTransaction().commit();
         } catch (NoResultException e) {
             e.printStackTrace();
-        } finally {
-            if (em != null) em.close();
         }
     }
 
