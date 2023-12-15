@@ -94,7 +94,6 @@ public class CustomHib extends GenericHib {
             e.printStackTrace();
         }
     }
-
     public void deleteComment(int id) {
         EntityManager em = getEntityManager();
         try {
