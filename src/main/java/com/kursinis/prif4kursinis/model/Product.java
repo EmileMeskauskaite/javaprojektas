@@ -55,5 +55,22 @@ public class Product implements Serializable {
         this.description = description;
         this.warehouse = warehouse;
         this.manufacturer = manufacturer;
+        this.price = Double.parseDouble(price);
+    }
+
+    @Override
+    public String toString() {
+        return title;
+    }
+
+    @Enumerated(EnumType.STRING)
+    private ProductType productType;
+    public ProductType getProductType() {
+        return this.productType;
+    }
+
+    double price;
+    public String getPrice() {
+        return String.valueOf(price);
     }
 }

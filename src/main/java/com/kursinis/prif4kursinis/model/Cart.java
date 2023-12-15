@@ -33,4 +33,11 @@ public class Cart {
         this.dateCreated = LocalDate.now();
         this.itemsInCart = new ArrayList<>();
     }
+    @Override
+    public String toString() {
+        return
+                "id=" + id +
+                ", dateCreated=" + dateCreated +
+                '}';
+    }
 }

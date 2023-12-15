@@ -1,26 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.kursinis.prif4kursinis.fxControllers.MainShopController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="com.kursinis.prif4kursinis.fxControllers.MainShopController">
     <children>
         <TabPane fx:id="tabPane" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
                 <Tab fx:id="primaryTab" onSelectionChanged="#loadTabValues" text="Products">
-                    <fx:include source="customerTab.fxml" fx:id="customerTab"/>
+                    <fx:include fx:id="customerTab" source="customerTab.fxml" />
                 </Tab>
                 <Tab fx:id="usersTab" onSelectionChanged="#loadTabValues" text="Users">
-                    <fx:include source="userTab.fxml" fx:id="userTab"/>
+                    <fx:include fx:id="userTab" source="userTab.fxml" />
                 </Tab>
                 <Tab fx:id="warehouseTab" onSelectionChanged="#loadTabValues" text="Warehouse">
                     <content>
@@ -40,16 +31,17 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <ListView fx:id="allOrders" layoutX="14.0" layoutY="14.0" prefHeight="335.0" prefWidth="246.0" />
-                                <ListView fx:id="productListForOrders" layoutX="278.0" layoutY="14.0" prefHeight="126.0" prefWidth="306.0" />
-                                <Button layoutX="286.0" layoutY="169.0" mnemonicParsing="false" onAction="#addToExistingOrder" prefHeight="26.0" prefWidth="155.0" text="Add to Order" />
-                                <Button layoutX="286.0" layoutY="207.0" mnemonicParsing="false" onAction="#removeFromExisting" prefHeight="26.0" prefWidth="154.0" text="Remove From Order" />
+                                <ListView fx:id="allOrders" layoutX="14.0" layoutY="14.0" prefHeight="335.0" prefWidth="179.0" />
+                                <ListView fx:id="productListForOrders" layoutX="220.0" layoutY="14.0" prefHeight="332.0" prefWidth="132.0" />
+                                <Button layoutX="441.0" layoutY="279.0" mnemonicParsing="false" onAction="#addToExistingOrder" prefHeight="26.0" prefWidth="155.0" text="Add to Order" />
+                                <Button layoutX="441.0" layoutY="323.0" mnemonicParsing="false" onAction="#removeFromExisting" prefHeight="26.0" prefWidth="154.0" text="Remove From Order" />
+                        <ListView fx:id="itemsInOrder" layoutX="372.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
                             </children>
                         </AnchorPane>
                     </content>
                 </Tab>
                 <Tab fx:id="productsTab" onSelectionChanged="#loadTabValues" text="Product">
-                    <fx:include source="productTab.fxml" fx:id="productTab"/>
+                    <fx:include fx:id="productTab" source="productTab.fxml" />
                 </Tab>
                 <Tab fx:id="commentTab" onSelectionChanged="#loadTabValues" text="Comments">
                     <content>

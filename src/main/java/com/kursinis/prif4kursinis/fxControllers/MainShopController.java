@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -45,6 +46,9 @@ public class MainShopController implements Initializable {
     public Tab commentTab;
     public ListView<Cart> allOrders;
     public ListView<Product> productListForOrders;
+    public ListView availableItems;
+    public ListView itemsInOrder;
+    public AnchorPane productTab;
     @FXML
     private CustomerTabController customerTabController;
     @FXML
@@ -68,9 +72,31 @@ public class MainShopController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // existing code...
 
+        allOrders.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                Cart selectedOrder = newValue;
+
+                // Get all available products
+                List<Product> allProducts = customHib.getAvailableProducts();
+
+                // Get products in the selected order
+                List<Product> productsInOrder = selectedOrder.getItemsInCart();
+
+                // Remove products in the selected order from all available products
+                allProducts.removeAll(productsInOrder);
+
+                // Update the availableItems ListView
+                productListForOrders.getItems().clear();
+                productListForOrders.getItems().addAll(allProducts);
+
+                // Update the itemsInOrder ListView
+                itemsInOrder.getItems().clear();
+                itemsInOrder.getItems().addAll(productsInOrder);
+            }
+        });
     }
-
 
 
     public void loadTabValues() {

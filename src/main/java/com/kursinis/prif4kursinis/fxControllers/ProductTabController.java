@@ -46,8 +46,35 @@ public class ProductTabController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         productType.getItems().addAll(ProductType.values());
-    }
 
+        productListManager.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                Product selectedProduct = newValue;
+                productTitleField.setText(selectedProduct.getTitle());
+                productDescriptionField.setText(selectedProduct.getDescription());
+                productManufacturerField.setText(selectedProduct.getManufacturer());
+                warehouseComboBox.setValue(selectedProduct.getWarehouse());
+                productType.setValue(selectedProduct.getProductType());
+                priceField.setText(selectedProduct.getPrice());
+
+                if (selectedProduct instanceof Instrument) {
+                    Instrument instrument = (Instrument) selectedProduct;
+                    typeField.setText(instrument.getType());
+                    modelField.setText(instrument.getModel());
+
+                } else if (selectedProduct instanceof Other) {
+                    Other other = (Other) selectedProduct;
+                    weightField.setText(String.valueOf(other.getWeight()));
+
+                } else if (selectedProduct instanceof Amplifier) {
+                    Amplifier amplifier = (Amplifier) selectedProduct;
+                    typeField.setText(amplifier.getType());
+                    modelField.setText(amplifier.getModel());
+
+                }
+            }
+        });
+    }
     public void enableProductFields() {
         if (productType.getSelectionModel().getSelectedItem() == ProductType.INSTRUMENT) {
             typeField.setDisable(false);
@@ -70,26 +97,72 @@ public class ProductTabController implements Initializable {
 
     private void loadProductListManager() {
         productListManager.getItems().clear();
-        productListManager.getItems().addAll(customHib.getAvailableProducts());
+        productListManager.getItems().addAll(customHib.getAllRecords(Product.class));
     }
 
     public void addNewProduct() {
-        Warehouse selectedWarehouse = warehouseComboBox.getSelectionModel().getSelectedItem();
-        Warehouse warehouse = customHib.getEntityById(Warehouse.class, selectedWarehouse.getId());
+        String title = productTitleField.getText();
+        String price = priceField.getText();
         ProductType selectedProductType = productType.getSelectionModel().getSelectedItem();
 
+        if (title == null || title.isEmpty()) {
+            // Show error message and return
+            System.out.println("Title is required");
+            return;
+        }
+
+        if (price == null || price.isEmpty()) {
+            // Show error message and return
+            System.out.println("Price is required");
+            return;
+        }
+
+        if (selectedProductType == null) {
+            // Show error message and return
+            System.out.println("Product type is required");
+            return;
+        }
+
+        Warehouse selectedWarehouse = warehouseComboBox.getSelectionModel().getSelectedItem();
+        Warehouse warehouse = customHib.getEntityById(Warehouse.class, selectedWarehouse.getId());
+
         if (selectedProductType == ProductType.INSTRUMENT) {
-            customHib.create(new Instrument(productTitleField.getText(), productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(),priceField.getText()));
+            customHib.create(new Instrument(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(), price));
         } else if (selectedProductType == ProductType.OTHER) {
-            customHib.create(new Other(productTitleField.getText(), productDescriptionField.getText(), productManufacturerField.getText(), warehouse, Double.parseDouble(weightField.getText()),priceField.getText()));
+            customHib.create(new Other(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, Double.parseDouble(weightField.getText()), price));
         } else if (selectedProductType == ProductType.AMPLIFIER) {
-            customHib.create(new Amplifier(productTitleField.getText(), productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(),modelField.getText(), Double.parseDouble(priceField.getText())));
+            customHib.create(new Amplifier(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(), Double.parseDouble(price)));
         }
 
         loadProductListManager();
     }
 
     public void updateProduct() {
+        Product selectedProduct = productListManager.getSelectionModel().getSelectedItem();
+        if (selectedProduct != null) {
+            selectedProduct.setTitle(productTitleField.getText());
+            selectedProduct.setDescription(productDescriptionField.getText());
+            selectedProduct.setManufacturer(productManufacturerField.getText());
+            selectedProduct.setWarehouse(warehouseComboBox.getValue());
+            selectedProduct.setProductType(productType.getValue());
+            selectedProduct.setPrice(Double.parseDouble(priceField.getText()));
+
+            if (selectedProduct instanceof Instrument) {
+                Instrument instrument = (Instrument) selectedProduct;
+                instrument.setType(typeField.getText());
+                instrument.setModel(modelField.getText());
+            } else if (selectedProduct instanceof Other) {
+                Other other = (Other) selectedProduct;
+                other.setWeight(Double.parseDouble(weightField.getText()));
+            } else if (selectedProduct instanceof Amplifier) {
+                Amplifier amplifier = (Amplifier) selectedProduct;
+                amplifier.setType(typeField.getText());
+                amplifier.setModel(modelField.getText());
+            }
+
+            customHib.update(selectedProduct);
+        }
+
         loadProductListManager();
     }
 
