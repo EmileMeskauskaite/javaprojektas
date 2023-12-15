@@ -92,6 +92,8 @@ public class CustomHib extends GenericHib {
             em.getTransaction().commit();
         } catch (NoResultException e) {
             e.printStackTrace();
+        } finally {
+            if (em != null) em.close();
         }
     }
     public void deleteComment(int id) {
