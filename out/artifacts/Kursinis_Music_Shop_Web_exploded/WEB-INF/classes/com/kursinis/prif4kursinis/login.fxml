@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="188.0" prefWidth="209.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kursinis.prif4kursinis.fxControllers.LoginController">
+   <children>
+      <TextField fx:id="loginField" layoutX="27.0" layoutY="38.0" promptText="Enter login:" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="38.0" />
+      <PasswordField fx:id="passwordField" layoutX="27.0" layoutY="79.0" promptText="Enter password:" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="79.0" />
+      <Button layoutX="27.0" layoutY="130.0" mnemonicParsing="false" onAction="#validateAndConnect" text="Login" AnchorPane.leftAnchor="27.0" AnchorPane.topAnchor="130.0" />
+      <Button layoutX="112.0" layoutY="130.0" mnemonicParsing="false" onAction="#registerNewUser" prefHeight="25.0" prefWidth="64.0" text="Register" AnchorPane.leftAnchor="112.0" />
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</AnchorPane>
