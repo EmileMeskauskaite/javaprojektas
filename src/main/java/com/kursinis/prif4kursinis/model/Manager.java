@@ -21,7 +21,6 @@ public class Manager extends User {
     private String employeeId;
     private String medCertificate;
     private LocalDate employmentDate;
-    private boolean isAdmin;
     @ManyToMany
     private List<Warehouse> worksAtWarehouse;
 
@@ -44,7 +43,4 @@ public class Manager extends User {
     }
 
 
-    public boolean isAdmin() {
-        return isAdmin;
-    }
 }

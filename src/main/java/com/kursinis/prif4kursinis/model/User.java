@@ -56,11 +56,11 @@ public abstract class User implements Serializable {
                 '}';
     }
 
-    private Boolean isAdmin;
+    public Boolean isAdmin;
 
     // Other fields and methods...
-
-    public Boolean getIsAdmin() {
+public Boolean isAdmin () {
         return isAdmin;
     }
+
 }

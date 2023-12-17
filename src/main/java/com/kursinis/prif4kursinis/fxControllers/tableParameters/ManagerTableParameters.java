@@ -4,7 +4,7 @@ import com.kursinis.prif4kursinis.fxControllers.tableParameters.UserTableParamet
 
 public class ManagerTableParameters extends UserTableParameters {
   private Boolean isAdmin;
-  public Boolean getIsAdmin() {
+  public Boolean IsAdmin() {
     return isAdmin;
   }
 }

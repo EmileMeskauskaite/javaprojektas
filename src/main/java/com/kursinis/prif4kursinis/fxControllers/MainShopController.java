@@ -79,11 +79,15 @@ public class MainShopController implements Initializable {
             } else if (this.currentUser instanceof Manager) {
                 Manager manager = (Manager) this.currentUser;
                 Boolean isAdmin = manager.getIsAdmin();
-                if (isAdmin != null) {
+                if (isAdmin != null && isAdmin) {
                     usersTab.setDisable(false);
+                    warehouseTab.setDisable(false);
+                    productsTab.setDisable(false);
+                } else {
+                    usersTab.setDisable(true);
+                    warehouseTab.setDisable(false);
+                    productsTab.setDisable(false);
                 }
-                warehouseTab.setDisable(false);
-                productsTab.setDisable(false);
             } else {
                 usersTab.setDisable(true);
             }
