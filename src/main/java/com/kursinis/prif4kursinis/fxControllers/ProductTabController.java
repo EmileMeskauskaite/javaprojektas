@@ -76,6 +76,8 @@ public class ProductTabController implements Initializable {
         });
     }
     public void enableProductFields() {
+        priceField.setDisable(false);
+
         if (productType.getSelectionModel().getSelectedItem() == ProductType.INSTRUMENT) {
             typeField.setDisable(false);
             modelField.setDisable(false);
@@ -127,11 +129,11 @@ public class ProductTabController implements Initializable {
         Warehouse warehouse = customHib.getEntityById(Warehouse.class, selectedWarehouse.getId());
 
         if (selectedProductType == ProductType.INSTRUMENT) {
-            customHib.create(new Instrument(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(), price));
+            customHib.create(new Instrument(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(), priceField.getText()));
         } else if (selectedProductType == ProductType.OTHER) {
-            customHib.create(new Other(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, Double.parseDouble(weightField.getText()), price));
+            customHib.create(new Other(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, Double.parseDouble(weightField.getText()), priceField.getText()));
         } else if (selectedProductType == ProductType.AMPLIFIER) {
-            customHib.create(new Amplifier(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(), Double.parseDouble(price)));
+            customHib.create(new Amplifier(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(), priceField.getText()));
         }
 
         loadProductListManager();

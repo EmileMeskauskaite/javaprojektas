@@ -23,6 +23,7 @@ public class Product implements Serializable {
     String title;
     String description;
     String manufacturer;
+    double price;
     @ManyToOne
     Warehouse warehouse;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -69,7 +70,7 @@ public class Product implements Serializable {
         return this.productType;
     }
 
-    double price;
+
     public String getPrice() {
         return String.valueOf(price);
     }

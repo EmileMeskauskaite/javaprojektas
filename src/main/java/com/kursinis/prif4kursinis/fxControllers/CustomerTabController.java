@@ -8,7 +8,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,6 +21,8 @@ public class CustomerTabController {
     public ListView<Product> productList;
     @FXML
     public ListView<Product> currentOrder;
+    @FXML
+    private Label productInfo; // This is the TextArea where product info will be displayed
 
     private User currentUser;
     private CustomHib customHib;
@@ -61,5 +65,37 @@ public class CustomerTabController {
         stage.setTitle("Shop");
         stage.setScene(scene);
         stage.show();
+    }
+
+
+    public void initialize() {
+        if (productInfo == null) {
+            System.out.println("productInfo is not injected correctly.");
+        } else {
+            productList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    displayProductInfo(newValue);
+                }
+            });
+        }
+    }
+
+    private void displayProductInfo(Product product) {
+        double price;
+        try {
+            // Try to parse the price to double
+            price = Double.parseDouble(product.getPrice());
+        } catch (NumberFormatException e) {
+            // If the price cannot be parsed to double, set it to a default value or display an error message
+            price = 0.0; // default value
+            System.out.println("Error: Price is not a valid number."); // error message
+        }
+
+        // Format the product information as a String
+        String productInfoStr = String.format("Name: %s\nPrice: %.2f\nDescription: %s\nManufacturer: %s",
+                product.getTitle(), price, product.getDescription(), product.getManufacturer());
+
+        // Display the product information
+        productInfo.setText(productInfoStr);
     }
 }
