@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.IOException;
 import java.net.URL;
@@ -43,9 +44,13 @@ public class LoginController implements Initializable {
         stage.show();
     }
 
+
     public void validateAndConnect() throws IOException {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(passwordField.getText());
+
         userHib = new UserHib(entityManagerFactory);
-        User user = userHib.getUserByCredentials(loginField.getText(), passwordField.getText());
+        User user = userHib.getUserByCredentials(loginField.getText(), hashedPassword);
         //Cia galim optimizuoti, kol kas paliksiu kaip pvz su userHib
         if (user != null) {
             FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("main-shop.fxml"));

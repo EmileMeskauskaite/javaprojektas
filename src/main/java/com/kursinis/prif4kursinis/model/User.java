@@ -1,5 +1,6 @@
 package com.kursinis.prif4kursinis.model;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -47,7 +49,14 @@ public abstract class User implements Serializable {
         this.birthDate = birthDate;
     }
 
+    private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    public void setPassword(String password) {
+        this.password = passwordEncoder.encode(password);
+    }
+    public boolean checkPassword(String rawPassword) {
+        return passwordEncoder.matches(rawPassword, this.password);
+    }
     @Override
     public String toString() {
         return "User{" +

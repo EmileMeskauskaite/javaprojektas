@@ -5,12 +5,21 @@ import com.kursinis.prif4kursinis.model.Customer;
 import com.kursinis.prif4kursinis.model.Manager;
 import com.kursinis.prif4kursinis.model.User;
 import jakarta.persistence.EntityManagerFactory;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.stage.Stage;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class RegistrationController implements Initializable {
 
@@ -88,17 +97,31 @@ public class RegistrationController implements Initializable {
 
 
     public void createUser() {
-        userHib = new UserHib(entityManagerFactory);
-        if (customerCheckbox.isSelected()) {
-            User user = new Customer(loginField.getText(), passwordField.getText(), birthDateField.getValue(), nameField.getText(), surnameField.getText(), addressField.getText(), cardNoField.getText());
-            userHib.createUser(user);
-        } else {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(passwordField.getText());
 
-        }
+        userHib = new UserHib(entityManagerFactory);
+            User user = new Customer(loginField.getText(), hashedPassword, birthDateField.getValue(), nameField.getText(), surnameField.getText(), addressField.getText(), cardNoField.getText());
+            userHib.createUser(user);
+
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //Arba cia kazka su laukais darau
+    }
+
+    public void goToLogin(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/kursinis/prif4kursinis/login.fxml"));
+            Parent loginSceneParent = fxmlLoader.load();
+            Scene loginScene = new Scene(loginSceneParent);
+            // get the current stage
+            Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+            window.setScene(loginScene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
