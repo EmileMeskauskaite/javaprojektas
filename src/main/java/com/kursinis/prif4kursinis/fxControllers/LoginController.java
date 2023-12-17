@@ -47,12 +47,10 @@ public class LoginController implements Initializable {
 
     public void validateAndConnect() throws IOException {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = passwordEncoder.encode(passwordField.getText());
 
         userHib = new UserHib(entityManagerFactory);
-        User user = userHib.getUserByCredentials(loginField.getText(), hashedPassword);
-        //Cia galim optimizuoti, kol kas paliksiu kaip pvz su userHib
-        if (user != null) {
+        User user = userHib.getUserByLogin(loginField.getText());
+        if (user != null && passwordEncoder.matches(passwordField.getText(), user.getPassword())) {
             FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("main-shop.fxml"));
             Parent parent = fxmlLoader.load();
             MainShopController mainShopController = fxmlLoader.getController();

@@ -3,10 +3,7 @@ package com.kursinis.prif4kursinis.hibernateControllers;
 import com.kursinis.prif4kursinis.model.Customer;
 import com.kursinis.prif4kursinis.model.Manager;
 import com.kursinis.prif4kursinis.model.User;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.Query;
+import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -132,4 +129,16 @@ public class UserHib {
         }
     }
 
+    public User getUserByLogin(String login) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.login = :login", User.class);
+            query.setParameter("login", login);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 }
