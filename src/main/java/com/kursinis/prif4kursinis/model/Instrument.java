@@ -14,13 +14,9 @@ public class Instrument extends Product {
     private String type;
     private String model;
 
-
-    public Instrument(String title, String description, String manufacturer, Warehouse warehouse, String type, String model, String price) {
-        super(title, description, manufacturer, warehouse);
-        this.type = type;
-        this.model = model;
+    public Instrument(String title, String text, String text1, Warehouse warehouse, String text2, String text3, double price) {
+        super(title, text, warehouse, text2, price); // Pass the price as a double
+        this.type = text2;
+        this.model = text3;
     }
-
-
-
 }

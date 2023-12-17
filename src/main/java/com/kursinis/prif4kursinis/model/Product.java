@@ -51,12 +51,13 @@ public class Product implements Serializable {
         this.warehouse = warehouse;
     }
 
-    public Product(String title, String description, Warehouse warehouse, String manufacturer, String price) {
+    public Product(String title, String description, Warehouse warehouse, String manufacturer, double price) {
         this.title = title;
         this.description = description;
         this.warehouse = warehouse;
         this.manufacturer = manufacturer;
-        this.price = Double.parseDouble(price);
+        this.price = price;
+
     }
 
     @Override

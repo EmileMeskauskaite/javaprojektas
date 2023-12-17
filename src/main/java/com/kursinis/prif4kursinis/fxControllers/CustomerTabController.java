@@ -80,6 +80,7 @@ public class CustomerTabController {
         }
     }
 
+
     private void displayProductInfo(Product product) {
         double price;
         try {

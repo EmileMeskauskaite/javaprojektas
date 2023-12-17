@@ -18,9 +18,10 @@ public class Amplifier extends Product {
 
 
 
-    public Amplifier(String title, String text, String text1, Warehouse warehouse, String text2, String text3, String text4) {
+    public Amplifier(String title, String text, String text1, Warehouse warehouse, String text2, String text3, double price) {
         super(title, text, text1, warehouse);
         this.type = text2;
         this.model = text3;
     }
+
 }

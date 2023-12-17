@@ -115,23 +115,15 @@ public class ProductTabController implements Initializable {
 
     public void addNewProduct() {
         String title = productTitleField.getText();
-        String price = priceField.getText();
+        double price = Double.parseDouble(priceField.getText());
         ProductType selectedProductType = productType.getSelectionModel().getSelectedItem();
 
         if (title == null || title.isEmpty()) {
-            // Show error message and return
             System.out.println("Title is required");
             return;
         }
 
-        if (price == null || price.isEmpty()) {
-            // Show error message and return
-            System.out.println("Price is required");
-            return;
-        }
-
         if (selectedProductType == null) {
-            // Show error message and return
             System.out.println("Product type is required");
             return;
         }
@@ -140,11 +132,17 @@ public class ProductTabController implements Initializable {
         Warehouse warehouse = customHib.getEntityById(Warehouse.class, selectedWarehouse.getId());
 
         if (selectedProductType == ProductType.INSTRUMENT) {
-            customHib.create(new Instrument(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(),  price));
+            Instrument instrument = new Instrument(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(), price);
+            instrument.setProductType(selectedProductType);
+            customHib.create(instrument);
         } else if (selectedProductType == ProductType.OTHER) {
-            customHib.create(new Other(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, Double.parseDouble(weightField.getText()), price));
+            Other other = new Other(title, productDescriptionField.getText(), warehouse, productManufacturerField.getText(), Double.parseDouble(weightField.getText()), price);
+            other.setProductType(selectedProductType);
+            customHib.create(other);
         } else if (selectedProductType == ProductType.AMPLIFIER) {
-            customHib.create(new Amplifier(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(), price));
+            Amplifier amplifier = new Amplifier(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(), price);
+            amplifier.setProductType(selectedProductType);
+            customHib.create(amplifier);
         }
 
         loadProductListManager();
