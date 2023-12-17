@@ -73,30 +73,41 @@ public class ProductTabController implements Initializable {
 
                 }
             }
+
+            // Call enableProductFields() to enable the priceField based on the selected product type
+            enableProductFields();
         });
+
+        // Add a listener to the productType ComboBox
+        productType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            enableProductFields();
+        });
+
+        // Call enableProductFields() to enable the priceField by default
+        enableProductFields();
     }
     public void enableProductFields() {
-        priceField.setDisable(false);
 
-        if (productType.getSelectionModel().getSelectedItem() == ProductType.INSTRUMENT) {
-            typeField.setDisable(false);
-            modelField.setDisable(false);
-            weightField.setDisable(true);
 
-        } else if (productType.getSelectionModel().getSelectedItem() == ProductType.OTHER) {
-
+        if (productType.getSelectionModel().getSelectedItem() == ProductType.OTHER) {
             modelField.setDisable(true);
             typeField.setDisable(true);
             weightField.setDisable(false);
 
-        } else {
+        }
+        else if (productType.getSelectionModel().getSelectedItem()==ProductType.INSTRUMENT)
+        {
+            weightField.setDisable(true);
+            typeField.setDisable(false);
+            modelField.setDisable(false);
+
+        }
+        else {
             typeField.setDisable(false);
             modelField.setDisable(true);
             weightField.setDisable(false);
-
         }
     }
-
     private void loadProductListManager() {
         productListManager.getItems().clear();
         productListManager.getItems().addAll(customHib.getAllRecords(Product.class));
@@ -129,11 +140,11 @@ public class ProductTabController implements Initializable {
         Warehouse warehouse = customHib.getEntityById(Warehouse.class, selectedWarehouse.getId());
 
         if (selectedProductType == ProductType.INSTRUMENT) {
-            customHib.create(new Instrument(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(), priceField.getText()));
+            customHib.create(new Instrument(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(),  price));
         } else if (selectedProductType == ProductType.OTHER) {
-            customHib.create(new Other(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, Double.parseDouble(weightField.getText()), priceField.getText()));
+            customHib.create(new Other(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, Double.parseDouble(weightField.getText()), price));
         } else if (selectedProductType == ProductType.AMPLIFIER) {
-            customHib.create(new Amplifier(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(), priceField.getText()));
+            customHib.create(new Amplifier(title, productDescriptionField.getText(), productManufacturerField.getText(), warehouse, typeField.getText(), modelField.getText(), price));
         }
 
         loadProductListManager();
@@ -147,7 +158,7 @@ public class ProductTabController implements Initializable {
             selectedProduct.setManufacturer(productManufacturerField.getText());
             selectedProduct.setWarehouse(warehouseComboBox.getValue());
             selectedProduct.setProductType(productType.getValue());
-            selectedProduct.setPrice(Double.parseDouble(priceField.getText()));
+            selectedProduct.setPrice(Double.parseDouble(priceField.getText())); // Pass the price as a String
 
             if (selectedProduct instanceof Instrument) {
                 Instrument instrument = (Instrument) selectedProduct;
@@ -169,9 +180,10 @@ public class ProductTabController implements Initializable {
     }
 
     public void deleteProduct() {
-
-        Product selectedProduct = productListManager.getSelectionModel().getSelectedItem();
-        customHib.deleteProduct(selectedProduct.getId());
+Product selectedProduct = productListManager.getSelectionModel().getSelectedItem();
+        if (selectedProduct != null) {
+            customHib.deleteProduct(selectedProduct.getId());
+        }
 
         loadProductListManager();
     }
