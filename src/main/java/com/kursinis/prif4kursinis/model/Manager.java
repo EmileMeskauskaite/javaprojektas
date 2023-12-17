@@ -37,8 +37,14 @@ public class Manager extends User {
 
     }
 
+
     @Override
     public String toString() {
         return "Free text, ka noriu";
+    }
+
+
+    public boolean isAdmin() {
+        return isAdmin;
     }
 }

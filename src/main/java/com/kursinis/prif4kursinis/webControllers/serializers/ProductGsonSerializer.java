@@ -18,6 +18,7 @@ public class ProductGsonSerializer implements JsonSerializer<Product> {
         jsonObject.addProperty("description", product.getDescription());
         jsonObject.addProperty("manufacturer", product.getManufacturer());
         jsonObject.addProperty("warehouse", product.getWarehouse().getTitle());
+        jsonObject.addProperty("price", product.getPrice());
 
         return jsonObject;
     }

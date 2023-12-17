@@ -28,7 +28,7 @@ public class ProductWeb {
     @RequestMapping(value = "/product/getAllProducts", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public String getAllProducts(){
+    public String getAllProducts() {
 
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(LocalDate.class, new LocalDateGsonSerializer());
@@ -40,4 +40,88 @@ public class ProductWeb {
         return gson.toJson(productList);
 
     }
+
+    @RequestMapping(value ="/product/getAllProductsByid/{id}",method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String getAllProductsByid(@PathVariable("id") int id) {
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocalDate.class, new LocalDateGsonSerializer());
+        builder.registerTypeAdapter(Product.class, new ProductGsonSerializer());
+        Gson gson = builder.create();
+
+        List<Product> productList = customHib.getAllRecords(Product.class);
+
+        return gson.toJson(productList);
+
+    }
+
+    @RequestMapping(value = "/product/getAllProductsByWarehouse/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String getAllProductsByWarehouse(@PathVariable("id") int id) {
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocalDate.class, new LocalDateGsonSerializer());
+        builder.registerTypeAdapter(Product.class, new ProductGsonSerializer());
+        Gson gson = builder.create();
+
+        List<Product> productList = customHib.getAllRecords(Product.class);
+
+        return gson.toJson(productList);
+
+    }
+
+//update product put
+    @RequestMapping(value = "/product/updateProduct", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String updateProduct(@RequestBody Product product) {
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocalDate.class, new LocalDateGsonSerializer());
+        builder.registerTypeAdapter(Product.class, new ProductGsonSerializer());
+        Gson gson = builder.create();
+
+        customHib.update(product);
+
+        return gson.toJson(product);
+
+    }
+
+    @RequestMapping(value = "/product/createProduct", method = RequestMethod.POST, produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String addProduct(@RequestBody Product product) {
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocalDate.class, new LocalDateGsonSerializer());
+        builder.registerTypeAdapter(Product.class, new ProductGsonSerializer());
+        Gson gson = builder.create();
+
+        customHib.create(product);
+
+        return gson.toJson(product);
+
+    }
+
+    @RequestMapping(value = "/product/deleteProduct/{id}",method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String deleteProduct(@PathVariable("id") int id) {
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocalDate.class, new LocalDateGsonSerializer());
+        builder.registerTypeAdapter(Product.class, new ProductGsonSerializer());
+        Gson gson = builder.create();
+
+        customHib.delete(Product.class, id);
+
+        return gson.toJson(id);
+
+    }
+
+
+
 }

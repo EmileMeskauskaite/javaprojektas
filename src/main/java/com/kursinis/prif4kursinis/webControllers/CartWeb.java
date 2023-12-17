@@ -10,10 +10,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -39,6 +36,76 @@ public class CartWeb {
         return gson.toJson(cartlist);
 
     }
+    //get cart by user
+    @RequestMapping(value = "/product/getAllCartsByUser/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String getAllCartsByUser(@PathVariable("id") int id){
 
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocalDate.class, new LocalDateGsonSerializer());
+        builder.registerTypeAdapter(Product.class, new ProductGsonSerializer());
+        Gson gson = builder.create();
+
+        List<Cart> cartlist = customHib.getAllRecords(Cart.class);
+
+        return gson.toJson(cartlist);
+
+    }
+
+    @RequestMapping(value = "/product/getAllCartsByProduct/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String getAllCartsByProduct(@PathVariable("id") int id){
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocalDate.class, new LocalDateGsonSerializer());
+        builder.registerTypeAdapter(Product.class, new ProductGsonSerializer());
+        Gson gson = builder.create();
+
+        List<Cart> cartlist = customHib.getAllRecords(Cart.class);
+
+        return gson.toJson(cartlist);
+
+    }
+    //delete cart by id
+    @RequestMapping(value = "/product/deleteCart/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String deleteCart(@PathVariable(name = "id") int id) {
+        System.out.println("Deleting cart with ID: " + id);
+        customHib.delete(Cart.class, id);
+        return "Cart deleted";
+    }
+    //create cart
+    @RequestMapping(value = "/product/createCart", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String createCart(@RequestBody String data) {
+        System.out.println("Creating cart");
+        Gson parser = new Gson();
+        Product product = parser.fromJson(data, Product.class);
+
+        Cart cart = new Cart();
+        cart.setItemsInCart((List<Product>) product);
+
+        customHib.create(cart);
+        return "Cart created";
+    }
+//update cart`
+    @RequestMapping(value = "/product/updateCart", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String updateCart(@RequestBody String data) {
+        System.out.println("Updating cart");
+        Gson parser = new Gson();
+        Product product = parser.fromJson(data, Product.class);
+
+        Cart cart = new Cart();
+        cart.setItemsInCart((List<Product>) product);
+
+        customHib.update(cart);
+        return "Cart updated";
+    }
 
 }

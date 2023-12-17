@@ -62,12 +62,32 @@ public class MainShopController implements Initializable {
     private CustomHib customHib;
 
 
-    public void setData(EntityManagerFactory entityManagerFactory, User currentUser) {
+    public void setData(EntityManagerFactory entityManagerFactory, User currentUser){
         this.entityManagerFactory = entityManagerFactory;
-        this.currentUser = currentUser;
         this.customHib = new CustomHib(entityManagerFactory);
         customerTabController.setCustomHib(customHib);
         customerTabController.setCurrentUser(currentUser);
+
+        // Check if customHib is null before trying to access its methods
+        if (customHib != null) {
+            this.currentUser = customHib.getEntityById(User.class, currentUser.getId()); // Fetch the current user from the database
+
+            if (this.currentUser instanceof Customer) {
+                usersTab.setDisable(true);
+                warehouseTab.setDisable(true);
+                productsTab.setDisable(true);
+            } else if (this.currentUser instanceof Manager) {
+                Manager manager = (Manager) this.currentUser;
+                Boolean isAdmin = manager.getIsAdmin();
+                if (isAdmin != null) {
+                    usersTab.setDisable(false);
+                }
+                warehouseTab.setDisable(false);
+                productsTab.setDisable(false);
+            } else {
+                usersTab.setDisable(true);
+            }
+        }
     }
 
     @Override
@@ -97,7 +117,10 @@ public class MainShopController implements Initializable {
             }
 
         });
-    }
+        // Check if currentUser is null before trying to access its methods
+
+        }
+
 
 
     public void loadTabValues() {
